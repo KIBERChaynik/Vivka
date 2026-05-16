@@ -1,0 +1,533 @@
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Брикас — Литовская кухня</title>
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.19/index.css" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#faf8f5;
+    --card:#ffffff;
+    --primary:#b5443a;
+    --primary-light:#d4736c;
+    --accent:#e8c07a;
+    --accent2:#6b8f5e;
+    --text:#2c2420;
+    --text-muted:#7a6e67;
+    --text-light:#a89b94;
+    --border:#e8e2dd;
+    --shadow:0 4px 24px rgba(44,36,32,0.08);
+    --shadow-lg:0 12px 48px rgba(44,36,32,0.12);
+    --radius:16px;
+    --radius-sm:10px;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+  
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;transition:all .4s ease;backdrop-filter:blur(0px)}
+  nav.scrolled{background:rgba(250,248,245,0.92);backdrop-filter:blur(20px);box-shadow:0 2px 20px rgba(0,0,0,0.06);padding:12px 40px}
+  .nav-logo{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none;letter-spacing:-0.5px}
+  .nav-logo i{font-size:28px}
+  .nav-links{display:flex;gap:32px;list-style:none}
+  .nav-links a{text-decoration:none;color:var(--text-muted);font-weight:500;font-size:14px;transition:color .3s;position:relative}
+  .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--primary);transition:width .3s}
+  .nav-links a:hover{color:var(--primary)}
+  .nav-links a:hover::after{width:100%}
+  .nav-cta{padding:10px 24px;background:var(--primary);color:#fff;border:none;border-radius:50px;font-weight:600;font-size:14px;cursor:pointer;transition:all .3s;text-decoration:none}
+  .nav-cta:hover{background:#96352e;transform:translateY(-2px);box-shadow:0 6px 20px rgba(181,68,58,0.3)}
+  .nav-burger{display:none;background:none;border:none;cursor:pointer;color:var(--text);font-size:28px}
+
+  /* HERO */
+  .hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:120px 40px 80px}
+  .hero-bg{position:absolute;inset:0;z-index:0}
+  .hero-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(0.35) saturate(1.2)}
+  .hero-gradient{position:absolute;inset:0;background:linear-gradient(135deg,rgba(44,36,32,0.7) 0%,rgba(181,68,58,0.2) 50%,rgba(44,36,32,0.5) 100%);z-index:1}
+  .hero-content{position:relative;z-index:2;max-width:800px}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:50px;color:#fff;font-size:13px;font-weight:500;margin-bottom:24px;animation:fadeInUp .8s ease}
+  .hero-badge i{color:var(--accent)}
+  .hero h1{font-size:clamp(40px,6vw,72px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:20px;letter-spacing:-2px;animation:fadeInUp .8s ease .1s both}
+  .hero h1 span{color:var(--accent)}
+  .hero p{font-size:clamp(16px,2vw,20px);color:rgba(255,255,255,0.8);max-width:600px;margin-bottom:36px;animation:fadeInUp .8s ease .2s both}
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap;animation:fadeInUp .8s ease .3s both}
+  .btn-primary{padding:16px 36px;background:var(--primary);color:#fff;border:none;border-radius:50px;font-weight:700;font-size:16px;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+  .btn-primary:hover{background:#96352e;transform:translateY(-3px);box-shadow:0 8px 30px rgba(181,68,58,0.4)}
+  .btn-outline{padding:16px 36px;background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.4);border-radius:50px;font-weight:600;font-size:16px;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+  .btn-outline:hover{background:rgba(255,255,255,0.1);border-color:#fff;transform:translateY(-3px)}
+  .hero-stats{display:flex;gap:48px;margin-top:60px;animation:fadeInUp .8s ease .4s both}
+  .hero-stat{text-align:center}
+  .hero-stat-num{font-size:36px;font-weight:900;color:#fff;letter-spacing:-1px}
+  .hero-stat-label{font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px}
+  .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;animation:bounce 2s infinite}
+  .hero-scroll i{font-size:28px;color:rgba(255,255,255,0.5)}
+
+  /* SECTIONS */
+  section{padding:100px 40px}
+  .section-header{text-align:center;max-width:700px;margin:0 auto 60px}
+  .section-tag{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;background:rgba(181,68,58,0.08);color:var(--primary);border-radius:50px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px}
+  .section-header h2{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1px;margin-bottom:16px}
+  .section-header p{color:var(--text-muted);font-size:17px}
+
+  /* ABOUT */
+  .about{background:var(--card)}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;max-width:1200px;margin:0 auto;align-items:center}
+  .about-images{position:relative}
+  .about-img-main{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-lg)}
+  .about-img-main img{width:100%;display:block;transition:transform .6s}
+  .about-img-main:hover img{transform:scale(1.05)}
+  .about-img-float{position:absolute;bottom:-30px;right:-30px;width:200px;height:200px;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-lg);border:4px solid var(--card)}
+  .about-img-float img{width:100%;height:100%;object-fit:cover}
+  .about-accent{position:absolute;top:-20px;left:-20px;width:80px;height:80px;background:var(--accent);border-radius:50%;opacity:0.15;z-index:-1}
+  .about-text h3{font-size:28px;font-weight:800;margin-bottom:20px;letter-spacing:-0.5px}
+  .about-text p{color:var(--text-muted);margin-bottom:16px;font-size:16px}
+  .about-features{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:32px}
+  .about-feature{display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--bg);border-radius:var(--radius-sm);transition:all .3s}
+  .about-feature:hover{background:rgba(181,68,58,0.06);transform:translateX(4px)}
+  .about-feature i{font-size:20px;color:var(--primary)}
+  .about-feature span{font-weight:600;font-size:14px}
+
+  /* SPECIALTIES */
+  .specialties{background:var(--bg)}
+  .specialties-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1200px;margin:0 auto}
+  .spec-card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:all .4s;cursor:pointer;position:relative}
+  .spec-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg)}
+  .spec-card-img{height:220px;overflow:hidden;position:relative}
+  .spec-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+  .spec-card:hover .spec-card-img img{transform:scale(1.1)}
+  .spec-card-badge{position:absolute;top:16px;left:16px;padding:6px 14px;background:var(--primary);color:#fff;border-radius:50px;font-size:12px;font-weight:700}
+  .spec-card-body{padding:24px}
+  .spec-card-body h3{font-size:20px;font-weight:700;margin-bottom:8px}
+  .spec-card-body p{color:var(--text-muted);font-size:14px;margin-bottom:16px}
+  .spec-card-footer{display:flex;align-items:center;justify-content:space-between}
+  .spec-price{font-size:22px;font-weight:800;color:var(--primary)}
+  .spec-rating{display:flex;align-items:center;gap:4px;color:var(--accent);font-size:14px;font-weight:600}
+
+  /* REVIEWS */
+  .reviews{background:var(--card);position:relative;overflow:hidden}
+  .reviews::before{content:'';position:absolute;top:0;right:0;width:400px;height:400px;background:radial-gradient(circle,rgba(181,68,58,0.05) 0%,transparent 70%);border-radius:50%}
+  .reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:28px;max-width:1200px;margin:0 auto}
+  .review-card{background:var(--bg);border-radius:var(--radius);padding:32px;position:relative;transition:all .4s;border:1px solid var(--border)}
+  .review-card:hover{border-color:var(--primary-light);transform:translateY(-4px);box-shadow:var(--shadow)}
+  .review-card::before{content:'"';position:absolute;top:16px;right:24px;font-size:80px;font-weight:900;color:rgba(181,68,58,0.08);line-height:1;font-family:Georgia,serif}
+  .review-header{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+  .review-avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;color:#fff;flex-shrink:0}
+  .review-avatar.a1{background:linear-gradient(135deg,#e74c3c,#c0392b)}
+  .review-avatar.a2{background:linear-gradient(135deg,#3498db,#2980b9)}
+  .review-info h4{font-size:16px;font-weight:700}
+  .review-info .review-level{font-size:12px;color:var(--text-light);margin-top:2px}
+  .review-stars{display:flex;gap:2px;margin-bottom:16px}
+  .review-stars i{color:var(--accent);font-size:16px}
+  .review-text{color:var(--text-muted);font-size:15px;line-height:1.7}
+  .review-text strong{color:var(--text);font-weight:600}
+  .review-date{margin-top:16px;font-size:13px;color:var(--text-light);display:flex;align-items:center;gap:6px}
+  .review-recommend{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;background:rgba(107,143,94,0.1);color:var(--accent2);border-radius:50px;font-size:12px;font-weight:600;margin-top:12px}
+
+  /* GALLERY */
+  .gallery{background:var(--bg);padding:100px 40px}
+  .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:200px 200px;gap:16px;max-width:1200px;margin:0 auto}
+  .gallery-item{border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer}
+  .gallery-item:nth-child(1){grid-column:span 2;grid-row:span 2}
+  .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+  .gallery-item:hover img{transform:scale(1.08)}
+  .gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.5) 0%,transparent 60%);opacity:0;transition:opacity .4s;display:flex;align-items:flex-end;padding:24px}
+  .gallery-item:hover .gallery-overlay{opacity:1}
+  .gallery-overlay span{color:#fff;font-weight:600;font-size:15px}
+
+  /* SOCIAL */
+  .social{background:linear-gradient(135deg,var(--primary) 0%,#8b3529 50%,#6b2a20 100%);padding:80px 40px;text-align:center;color:#fff;position:relative;overflow:hidden}
+  .social::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 40%,rgba(255,255,255,0.05) 0%,transparent 50%)}
+  .social h2{font-size:clamp(28px,4vw,40px);font-weight:800;margin-bottom:16px;position:relative;z-index:1}
+  .social p{color:rgba(255,255,255,0.7);font-size:17px;margin-bottom:40px;max-width:600px;margin-left:auto;margin-right:auto;position:relative;z-index:1}
+  .social-links{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+  .social-link{display:inline-flex;align-items:center;gap:12px;padding:18px 32px;background:rgba(255,255,255,0.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:var(--radius-sm);color:#fff;text-decoration:none;font-weight:600;font-size:15px;transition:all .3s}
+  .social-link:hover{background:rgba(255,255,255,0.25);transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,0.2)}
+  .social-link i{font-size:24px}
+  .social-link.vk:hover{background:rgba(39,135,245,0.4)}
+  .social-link.tg:hover{background:rgba(39,185,240,0.4)}
+
+  /* FOOTER */
+  footer{background:var(--text);color:rgba(255,255,255,0.6);padding:60px 40px 30px}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;max-width:1200px;margin:0 auto 40px}
+  .footer-brand h3{color:#fff;font-size:24px;font-weight:800;margin-bottom:12px}
+  .footer-brand p{font-size:14px;line-height:1.7}
+  .footer-col h4{color:#fff;font-size:15px;font-weight:700;margin-bottom:16px}
+  .footer-col ul{list-style:none}
+  .footer-col li{margin-bottom:10px}
+  .footer-col a{color:rgba(255,255,255,0.5);text-decoration:none;font-size:14px;transition:color .3s}
+  .footer-col a:hover{color:var(--accent)}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:24px;text-align:center;font-size:13px;max-width:1200px;margin:0 auto}
+
+  /* ANIMATIONS */
+  @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes bounce{0%,20%,50%,80%,100%{transform:translateX(-50%) translateY(0)}40%{transform:translateX(-50%) translateY(-12px)}60%{transform:translateX(-50%) translateY(-6px)}}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  .fade-in{opacity:0;transform:translateY(40px);transition:all .7s cubic-bezier(0.16,1,0.3,1)}
+  .fade-in.visible{opacity:1;transform:translateY(0)}
+
+  /* RESPONSIVE */
+  @media(max-width:900px){
+    nav{padding:14px 20px}
+    .nav-links{display:none}
+    .nav-burger{display:block}
+    section{padding:70px 20px}
+    .hero{padding:100px 20px 60px}
+    .about-grid{grid-template-columns:1fr;gap:40px}
+    .about-img-float{width:150px;height:150px;right:-10px;bottom:-20px}
+    .reviews-grid{grid-template-columns:1fr}
+    .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:180px 180px 180px}
+    .gallery-item:nth-child(1){grid-column:span 2}
+    .footer-grid{grid-template-columns:1fr 1fr}
+    .hero-stats{gap:24px}
+    .hero-stat-num{font-size:28px}
+    .about-features{grid-template-columns:1fr}
+  }
+  @media(max-width:500px){
+    .gallery-grid{grid-template-columns:1fr;grid-template-rows:repeat(4,180px)}
+    .gallery-item:nth-child(1){grid-column:span 1;grid-row:span 1}
+    .footer-grid{grid-template-columns:1fr}
+    .hero-actions{flex-direction:column}
+    .social-links{flex-direction:column;align-items:center}
+  }
+
+  /* Mobile menu */
+  .mobile-menu{position:fixed;inset:0;background:rgba(250,248,245,0.98);backdrop-filter:blur(20px);z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;transform:translateX(100%);transition:transform .4s cubic-bezier(0.16,1,0.3,1)}
+  .mobile-menu.open{transform:translateX(0)}
+  .mobile-menu a{font-size:24px;font-weight:700;color:var(--text);text-decoration:none;transition:color .3s}
+  .mobile-menu a:hover{color:var(--primary)}
+  .mobile-close{position:absolute;top:20px;right:20px;background:none;border:none;font-size:32px;cursor:pointer;color:var(--text)}
+
+  /* Decorative */
+  .deco-dots{position:absolute;width:120px;height:120px;background-image:radial-gradient(circle,var(--accent) 1.5px,transparent 1.5px);background-size:16px 16px;opacity:0.3}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo"><i class="ri-restaurant-2-fill"></i>Брикас</a>
+  <ul class="nav-links">
+    <li><a href="#about">О нас</a></li>
+    <li><a href="#menu">Меню</a></li>
+    <li><a href="#reviews">Отзывы</a></li>
+    <li><a href="#gallery">Галерея</a></li>
+    <li><a href="#social">Контакты</a></li>
+  </ul>
+  <a href="#social" class="nav-cta">Забронировать</a>
+  <button class="nav-burger" onclick="toggleMenu()"><i class="ri-menu-4-line"></i></button>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="toggleMenu()"><i class="ri-close-line"></i></button>
+  <a href="#about" onclick="toggleMenu()">О нас</a>
+  <a href="#menu" onclick="toggleMenu()">Меню</a>
+  <a href="#reviews" onclick="toggleMenu()">Отзывы</a>
+  <a href="#gallery" onclick="toggleMenu()">Галерея</a>
+  <a href="#social" onclick="toggleMenu()">Контакты</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="https://avatars.mds.yandex.net/get-altay/8128315/2a0000018fd87b2012cc90ac2d091126ad09/XXXL" alt="Интерьер Брикас">
+  </div>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><i class="ri-star-fill"></i> Литовская кухня в сердце города</div>
+    <h1>Ресторан <span>Брикас</span></h1>
+    <p>Аутентичные блюда литовской кухни — от легендарных цеппелинов до хрустящих баклажанов. Попробуйте «обед фермера» и откройте для себя 100 вкусов картофеля.</p>
+    <div class="hero-actions">
+      <a href="#menu" class="btn-primary"><i class="ri-restaurant-2-fill"></i> Смотреть меню</a>
+      <a href="#reviews" class="btn-outline"><i class="ri-star-fill"></i> Читать отзывы</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">100+</div><div class="hero-stat-label">Видов картофеля</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">4.8</div><div class="hero-stat-label">Средний рейтинг</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">3+</div><div class="hero-stat-label">Года с гостями</div></div>
+    </div>
+  </div>
+  <div class="hero-scroll"><i class="ri-arrow-down-double-line"></i></div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-images fade-in">
+      <div class="about-img-main">
+        <img src="https://avatars.mds.yandex.net/get-altay/14844975/2a000001947f07dec96b7cd4ae666b0a6837/XXXL" alt="Блюда Брикас">
+      </div>
+      <div class="about-img-float">
+        <img src="https://avatars.mds.yandex.net/get-altay/9707320/2a0000018a2e0fcd064b5d5ddb74c852e1ad/XXXL" alt="Интерьер">
+      </div>
+      <div class="about-accent"></div>
+    </div>
+    <div class="about-text fade-in">
+      <div class="section-tag"><i class="ri-heart-fill"></i> О ресторане</div>
+      <h3>Место, где литовская кухня оживает</h3>
+      <p>Ресторан «Брикас» — это место, где можно попробовать аутентичные блюда литовской кухни. Мы сочетаем традиции балтийских народов с современным подходом к подаче и обслуживанию.</p>
+      <p>Гости рекомендуют заказать «обед фермера» — сразу три небольших блюда из 100 вариантов различного приготовления картофеля. Каждый визит — это новое кулинарное путешествие.</p>
+      <div class="about-features">
+        <div class="about-feature"><i class="ri-cup-line"></i><span>Авторские блюда</span></div>
+        <div class="about-feature"><i class="ri-leaf-line"></i><span>Свежие продукты</span></div>
+        <div class="about-feature"><i class="ri-award-line"></i><span>Высокий рейтинг</span></div>
+        <div class="about-feature"><i class="ri-heart-3-line"></i><span>Уютная атмосфера</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU HIGHLIGHTS -->
+<section class="specialties" id="menu">
+  <div class="section-header fade-in">
+    <div class="section-tag"><i class="ri-fire-fill"></i> Популярное</div>
+    <h2>Хиты нашего меню</h2>
+    <p>Блюда, которые рекомендуют наши гости. Попробуйте и выберите своего фаворита!</p>
+  </div>
+  <div class="specialties-grid">
+    <div class="spec-card fade-in">
+      <div class="spec-card-img">
+        <img src="https://avatars.mds.yandex.net/get-altay/8128315/2a0000018fd87b2012cc90ac2d091126ad09/XXXL" alt="Цеппелины">
+        <div class="spec-card-badge">Хит продаж</div>
+      </div>
+      <div class="spec-card-body">
+        <h3>Цеппелины</h3>
+        <p>Мясо в картофельной оболочке, как большая котлета с чесночным соусом и печёными овощами. Классика литовской кухни.</p>
+        <div class="spec-card-footer">
+          <span class="spec-price">от 590 ₽</span>
+          <span class="spec-rating"><i class="ri-star-fill"></i> 4.9</span>
+        </div>
+      </div>
+    </div>
+    <div class="spec-card fade-in">
+      <div class="spec-card-img">
+        <img src="https://avatars.mds.yandex.net/get-altay/14844975/2a000001947f07dec96b7cd4ae666b0a6837/XXXL" alt="Обед фермера">
+        <div class="spec-card-badge">Рекомендуем</div>
+      </div>
+      <div class="spec-card-body">
+        <h3>Обед фермера</h3>
+        <p>Три небольших блюда из 100 вариантов различного приготовления картофеля. Каждый раз — новый вкус!</p>
+        <div class="spec-card-footer">
+          <span class="spec-price">от 490 ₽</span>
+          <span class="spec-rating"><i class="ri-star-fill"></i> 4.8</span>
+        </div>
+      </div>
+    </div>
+    <div class="spec-card fade-in">
+      <div class="spec-card-img">
+        <img src="https://avatars.mds.yandex.net/get-altay/17863912/2a00000198e28a013e7391f5a430d04f9711/XXXL" alt="Грибной суп">
+        <div class="spec-card-badge">Новинка</div>
+      </div>
+      <div class="spec-card-body">
+        <h3>Грибной суп</h3>
+        <p>Грибной суп в хлебной тарелке — объедение. Корочка хрустящая, супчик с морозца зашёл хорошо.</p>
+        <div class="spec-card-footer">
+          <span class="spec-price">от 390 ₽</span>
+          <span class="spec-rating"><i class="ri-star-fill"></i> 4.9</span>
+        </div>
+      </div>
+    </div>
+    <div class="spec-card fade-in">
+      <div class="spec-card-img">
+        <img src="https://avatars.mds.yandex.net/get-altay/9707320/2a0000018a2e0fcd064b5d5ddb74c852e1ad/XXXL" alt="Баклажаны">
+        <div class="spec-card-badge">Выбор гостей</div>
+      </div>
+      <div class="spec-card-body">
+        <h3>Запечённые баклажаны</h3>
+        <p>Хрустящие запечённые баклажаны — блюдо из топ-3 салатов. Вкуснее всего именно здесь!</p>
+        <div class="spec-card-footer">
+          <span class="spec-price">от 350 ₽</span>
+          <span class="spec-rating"><i class="ri-star-fill"></i> 5.0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="section-header fade-in">
+    <div class="section-tag"><i class="ri-chat-quote-fill"></i> Отзывы</div>
+    <h2>Что говорят наши гости</h2>
+    <p>Реальные отзывы посетителей ресторана Брикас</p>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card fade-in">
+      <div class="review-header">
+        <div class="review-avatar a1">НГ</div>
+        <div class="review-info">
+          <h4>Настёна Герасимова</h4>
+          <div class="review-level">Дегустатор 6 уровня</div>
+        </div>
+      </div>
+      <div class="review-stars">
+        <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
+      </div>
+      <div class="review-text">
+        Интересный ресторан с литовской кухней и российским пивом. Кухня, интерьер и обслуживание на высоте.<br><br>
+        <strong>Грибной суп в хлебной тарелке</strong> — объедение. Корочка хрустящая, супчик с морозца зашёл хорошо.<br><br>
+        Для любителей <strong>цеппелинов</strong> — ассортимент на разный вкус. Везде пробуем салат с баклажанами. Здесь он влетел в мой личный <strong>топ-3</strong>. Идеальный.<br><br>
+        Дочка заказала брауни — оказалось, с оригинальной подачей. Нас обслуживал официант Алексей — шустрый, обходительный, внимательный, с отличным чувством юмора.
+      </div>
+      <div class="review-date"><i class="ri-calendar-line"></i> 17 января</div>
+      <div class="review-recommend"><i class="ri-thumb-up-fill"></i> Рекомендует</div>
+    </div>
+    <div class="review-card fade-in">
+      <div class="review-header">
+        <div class="review-avatar a2">АЗ</div>
+        <div class="review-info">
+          <h4>Андрей Зиновьев</h4>
+          <div class="review-level">Дегустатор 5 уровня</div>
+        </div>
+      </div>
+      <div class="review-stars">
+        <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
+      </div>
+      <div class="review-text">
+        Хороший ресторан литовской кухни. Посещаем его с женой уже <strong>третий раз</strong> и хочется посетить его ещё. Располагается в здании торгового центра.<br><br>
+        Оформлен в национальном литовском колорите. Официантки в народных костюмах, очень приветливые.<br><br>
+        Заказали с женой <strong>Цеппелины</strong> — мясо в картофельной оболочке, как большая котлета с чесночным соусом и печёнными овощами. <strong>Очень рекомендую попробовать запечённые хрустящие баклажаны.</strong> Это блюдо подают во многих ресторанах, но здесь, на мой вкус, оно вкуснее всего. Очень вкусно и полезно. Рекомендую.
+      </div>
+      <div class="review-date"><i class="ri-calendar-line"></i> 17 апреля</div>
+      <div class="review-recommend"><i class="ri-thumb-up-fill"></i> Рекомендует</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="section-header fade-in">
+    <div class="section-tag"><i class="ri-camera-fill"></i> Галерея</div>
+    <h2>Атмосфера Брикас</h2>
+    <p>Загляните к нам — почувствуйте тепло литовского гостеприимства</p>
+  </div>
+  <div class="gallery-grid fade-in">
+    <div class="gallery-item">
+      <img src="https://avatars.mds.yandex.net/get-altay/8128315/2a0000018fd87b2012cc90ac2d091126ad09/XXXL" alt="Галерея 1">
+      <div class="gallery-overlay"><span>Интерьер ресторана</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://avatars.mds.yandex.net/get-altay/14844975/2a000001947f07dec96b7cd4ae666b0a6837/XXXL" alt="Галерея 2">
+      <div class="gallery-overlay"><span>Авторская кухня</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://avatars.mds.yandex.net/get-altay/17863912/2a00000198e28a013e7391f5a430d04f9711/XXXL" alt="Галерея 3">
+      <div class="gallery-overlay"><span>Цеппелины</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://avatars.mds.yandex.net/get-altay/9707320/2a0000018a2e0fcd064b5d5ddb74c852e1ad/XXXL" alt="Галерея 4">
+      <div class="gallery-overlay"><span>Уютная атмосфера</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://avatars.mds.yandex.net/get-altay/8128315/2a0000018fd87b2012cc90ac2d091126ad09/XXXL" alt="Галерея 5">
+      <div class="gallery-overlay"><span>Детали подачи</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL -->
+<section class="social" id="social">
+  <div class="fade-in">
+    <h2>Следите за нами в соцсетях</h2>
+    <p>Подписывайтесь на наши обновления, акции и новые блюда. Будем рады видеть вас!</p>
+    <div class="social-links">
+      <a href="https://vk.com/yandex.maps" target="_blank" class="social-link vk">
+        <i class="ri-vk-fill"></i> ВКонтакте
+      </a>
+      <a href="https://t.me/mapsyandex" target="_blank" class="social-link tg">
+        <i class="ri-telegram-fill"></i> Telegram
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3> Брикас</h3>
+      <p>Ресторан аутентичной литовской кухни. Цеппелины, обед фермера, запечённые баклажаны и многое другое. Приходите за настоящими вкусами Литвы.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Навигация</h4>
+      <ul>
+        <li><a href="#about">О нас</a></li>
+        <li><a href="#menu">Меню</a></li>
+        <li><a href="#reviews">Отзывы</a></li>
+        <li><a href="#gallery">Галерея</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Контакты</h4>
+      <ul>
+        <li><a href="#">Забронировать стол</a></li>
+        <li><a href="https://vk.com/yandex.maps" target="_blank">ВКонтакте</a></li>
+        <li><a href="https://t.me/mapsyandex" target="_blank">Telegram</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Режим работы</h4>
+      <ul>
+        <li><a href="#">Пн–Чт: 11:00 – 22:00</a></li>
+        <li><a href="#">Пт–Сб: 11:00 – 23:00</a></li>
+        <li><a href="#">Вс: 12:00 – 21:00</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Брикас. Все права защищены. Сделано с ❤️ к литовской кухне.</p>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  navbar.classList.toggle('scrolled',window.scrollY>60);
+});
+
+// Mobile menu
+function toggleMenu(){
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// Intersection Observer for fade-in
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach((entry,idx)=>{
+    if(entry.isIntersecting){
+      setTimeout(()=>{
+        entry.target.classList.add('visible');
+      },idx*100);
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:0.1,rootMargin:'0px 0px -50px 0px'});
+
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const target=document.querySelector(a.getAttribute('href'));
+    if(target){
+      target.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
+});
+
+// Parallax on hero
+window.addEventListener('scroll',()=>{
+  const hero=document.querySelector('.hero-bg img');
+  if(hero){
+    const scrolled=window.scrollY;
+    hero.style.transform=`translateY(${scrolled*0.3}px) scale(1.1)`;
+  }
+});
+</script>
+</body>
+</html>
+```
